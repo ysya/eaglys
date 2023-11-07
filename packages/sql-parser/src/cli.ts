@@ -15,10 +15,10 @@ async function main() {
   const sqlString = await rl.question('Please input a SQL:')
   try {
     const ast = sqlToAst(sqlString)
-    const modifiedAst = modifyAst(ast, hashMap) as Statement[]
-    const modifiedSql = rebuildSql(modifiedAst)
+    const modifiedAst = modifyAst(ast, hashMap)
+    const modifiedSql = rebuildSql(modifiedAst.ast)
     console.log('Input SQL:\n', sqlString, '\n')
-    console.log('HashMap:\n', hashMap, '\n')
+    console.log('HashMap:\n', modifiedAst.hashMap, '\n')
     console.log('Modified Sql:\n', modifiedSql, '\n')
     console.log('----------------------------------\n')
     main()
