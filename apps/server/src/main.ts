@@ -6,6 +6,7 @@ import http from 'http'
 import { SqlHashMap } from './entities/SqlHashMap.entity'
 import { Sqlite } from './data-source'
 import { DataSource, Repository } from 'typeorm'
+import cors from 'cors'
 export const DI = {} as {
   server: http.Server
   orm: DataSource
@@ -13,6 +14,7 @@ export const DI = {} as {
 }
 
 export const app = express()
+app.use(cors())
 
 const port = process.env.PORT || 3000
 export const init = (async () => {
