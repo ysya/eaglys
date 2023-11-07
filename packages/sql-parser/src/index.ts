@@ -1,11 +1,13 @@
 import { Statement } from 'pgsql-ast-parser'
 import { modifyAst, rebuildSql, sqlToAst } from './parser'
 
-export function sqlParse(sqlString: string) {
-  const hashMapToCompare: Record<
+export function sqlParse(
+  sqlString: string,
+  hashMapToCompare: Record<
     /** originalColumnName */ string,
     /** hashedColumnName */ string
-  > = {}
+  >
+) {
   try {
     const ast = sqlToAst(sqlString)
     const modified = modifyAst(ast, hashMapToCompare)

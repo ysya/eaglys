@@ -9,6 +9,7 @@
     "web:build": "pnpm --filter @app/web build",
     "server:start": "pnpm --filter @app/server dev",
     "server:build": "pnpm --filter @app/server build",
+    "server:migrate": "pnpm --filter @app/server migrate",
     "sql-parser:start": "pnpm --filter @package/sql-parser start",
     "sql-parser:build": "pnpm --filter @package/sql-parser build"
   },
