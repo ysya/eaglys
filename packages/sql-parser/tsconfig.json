@@ -1,0 +1,15 @@
+{
+  "references": [
+    {
+      "path": "../../tsconfig.json"
+    }
+  ],
+  "include": [
+    "./**/*.ts",
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
+  }
+}

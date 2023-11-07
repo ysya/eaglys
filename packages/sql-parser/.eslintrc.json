@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "../../.eslintrc.js"
+  ],
+  "env": {
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module"
+  }
+}

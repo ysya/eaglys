@@ -1,0 +1,27 @@
+{
+  "extends": "@tsconfig/node-lts/tsconfig.json",
+  "include": [
+    "vitest.config.*",
+  ],
+  "exclude": [
+    "**__test__**",
+    "**/dist",
+    "**/node_modules",
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": [
+      "node",
+    ],
+  },
+  "paths": {
+    "@package/*": [
+      "./packages/*"
+    ],
+  },
+}
