@@ -1,13 +1,15 @@
 {
   "extends": "../../tsconfig.json",
   "include": [
-    "./**/**.ts"
+    "src/**/**.ts"
   ],
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "strictPropertyInitialization": false,
+    "outDir": "./dist",
+    "sourceMap": true,
     "paths": {
       "@/*": [
         "./src/*"

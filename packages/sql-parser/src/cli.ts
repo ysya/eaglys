@@ -1,4 +1,3 @@
-import { Statement } from 'pgsql-ast-parser'
 import * as readline from 'readline/promises'
 import { sqlToAst, modifyAst, rebuildSql } from './parser'
 
