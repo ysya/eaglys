@@ -7,12 +7,14 @@ import {
   toSql,
 } from 'pgsql-ast-parser'
 
-function hashAndMap(originalColumnName: string, map: Record<string, string>) {
-  if (map[originalColumnName]) return map[originalColumnName]
+function hashAndMap(
+  originalColumnName: string,
+  mapToCompare: Record<string, string>
+) {
+  if (mapToCompare[originalColumnName]) return mapToCompare[originalColumnName]
   const hashedColumnName = createHash('sha256')
     .update(originalColumnName)
     .digest('hex')
-  map[originalColumnName] = hashedColumnName
   return hashedColumnName
 }
 
@@ -37,41 +39,55 @@ export function rebuildSql(modifiedAst: Statement[]) {
 }
 
 export function modifyAst(ast: Statement[], hashMap: Record<string, string>) {
+  let newHashMap: Record<string, string> = {}
   const result: Array<Statement | null | undefined> = []
-  const mapper = astMapper((map) => ({
+  const mapper = astMapper(() => ({
     insert: (insert) => {
       if (!insert.columns) return insert
       insert.columns = insert.columns.map((column: any) => {
-        const hashedColumnName = hashAndMap(column.name, hashMap)
-        column.name = hashedColumnName
+        const h = hashAndMap(column.name, hashMap)
+        newHashMap = { ...newHashMap, [column.name]: h }
+        column.name = h
         return column
       })
       return insert
     },
     column: (column: any) => {
-      column.name = hashAndMap(column.name, hashMap)
+      const h = hashAndMap(column.name, hashMap)
+      newHashMap = { ...newHashMap, [column.name]: h }
+      column.name = h
+
       return column
     },
-    ref: (ref: any) =>
-      assignChanged(ref, {
-        name: hashAndMap(ref.name, hashMap),
-      }),
+    ref: (ref: any) => {
+      const h = hashAndMap(ref.name, hashMap)
+      newHashMap = { ...newHashMap, [ref.name]: h }
+      return assignChanged(ref, {
+        name: h,
+      })
+    },
     binary: (binary) => {
       if (binary.left.type === 'ref') {
-        binary.left.name = hashAndMap(binary.left.name, hashMap)
+        const h = hashAndMap(binary.left.name, hashMap)
+        newHashMap = { ...newHashMap, [binary.left.name]: h }
+        binary.left.name = h
       }
       if (binary.right.type === 'ref') {
-        binary.right.name = hashAndMap(binary.right.name, hashMap)
+        const h = hashAndMap(binary.right.name, hashMap)
+        newHashMap = { ...newHashMap, [binary.right.name]: h }
+        binary.right.name = h
       }
       return binary
     },
     set: (set) => {
-      set.column.name = hashAndMap(set.column.name, hashMap)
+      const h = hashAndMap(set.column.name, hashMap)
+      newHashMap = { ...newHashMap, [set.column.name]: h }
+      set.column.name = h
       return set
     },
   }))
   for (const statement of ast) {
     result.push(mapper.statement(statement))
   }
-  return result as Statement[]
+  return { ast: result as Statement[], hashMap: newHashMap }
 }

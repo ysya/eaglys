@@ -144,9 +144,9 @@ describe('should modify AST and maintain a map of original and hashed column nam
     const hashedA = hash('a')
     const hashedB = hash('b')
 
-    expect((modifiedAst[0] as any).columns[0].expr.name).toBe(hashedA)
-    expect((modifiedAst[0] as any).columns[1].expr.name).toBe(hashedB)
-    expect(map).toEqual({ a: hashedA, b: hashedB })
+    expect((modifiedAst.ast[0] as any).columns[0].expr.name).toBe(hashedA)
+    expect((modifiedAst.ast[0] as any).columns[1].expr.name).toBe(hashedB)
+    expect(modifiedAst.hashMap).toEqual({ a: hashedA, b: hashedB })
   })
   it('insert', () => {
     // const ast = sqlToAst(testCase.insert)
@@ -160,7 +160,7 @@ describe('should modify AST and maintain a map of original and hashed column nam
       'email',
       'created_at',
     ].map((name) => hash(name))
-    expect((modifiedAst[0] as any).columns.map((x: any) => x.name)).toEqual(
+    expect((modifiedAst.ast[0] as any).columns.map((x: any) => x.name)).toEqual(
       hashedColumnNames
     )
     // check map
@@ -168,7 +168,7 @@ describe('should modify AST and maintain a map of original and hashed column nam
       const originalName = ['username', 'password', 'email', 'created_at'][
         index
       ]
-      expect(map[originalName]).toBe(hashedName)
+      expect(modifiedAst.hashMap[originalName]).toBe(hashedName)
     })
   })
 
@@ -178,8 +178,10 @@ describe('should modify AST and maintain a map of original and hashed column nam
     const modifiedAst = modifyAst(ast, map)
 
     const hashedColumnName = hash('username')
-    expect((modifiedAst[0] as any).sets[0].column.name).toBe(hashedColumnName)
-    expect(map['username']).toBe(hashedColumnName)
+    expect((modifiedAst.ast[0] as any).sets[0].column.name).toBe(
+      hashedColumnName
+    )
+    expect(modifiedAst.hashMap['username']).toBe(hashedColumnName)
   })
 
   it('delete', () => {
@@ -187,8 +189,8 @@ describe('should modify AST and maintain a map of original and hashed column nam
     const map: Record<string, string> = {}
     const modifiedAst = modifyAst(ast, map)
     const hashedColumnName = hash('id')
-    expect((modifiedAst[0] as any).where.left.name).toBe(hashedColumnName)
-    expect(map['id']).toBe(hashedColumnName)
+    expect((modifiedAst.ast[0] as any).where.left.name).toBe(hashedColumnName)
+    expect(modifiedAst.hashMap['id']).toBe(hashedColumnName)
   })
 
   it('transaction', () => {
@@ -201,9 +203,11 @@ describe('should modify AST and maintain a map of original and hashed column nam
     const hashedLastLogin = createHash('sha256')
       .update('last_login')
       .digest('hex')
-    expect((modifiedAst[1] as any).sets[0].column.name).toBe(hashedEmail)
-    expect((modifiedAst[2] as any).sets[0].column.name).toBe(hashedLastLogin)
-    expect(map).toEqual({
+    expect((modifiedAst.ast[1] as any).sets[0].column.name).toBe(hashedEmail)
+    expect((modifiedAst.ast[2] as any).sets[0].column.name).toBe(
+      hashedLastLogin
+    )
+    expect(modifiedAst.hashMap).toEqual({
       email: hashedEmail,
       last_login: hashedLastLogin,
       username: hashedUsername,
@@ -219,7 +223,7 @@ describe('should rebuild SQL from AST', () => {
     map = {}
     const taskName = ctx.task.name as keyof typeof testCase
     ast = sqlToAst(testCase[taskName])
-    modifiedAst = modifyAst(ast, map)
+    modifiedAst = modifyAst(ast, map).ast
   })
   it('select', () => {
     const modifiedSql = rebuildSql(modifiedAst)
