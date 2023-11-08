@@ -1,12 +1,14 @@
 import 'reflect-metadata'
+import 'sqlite3'
 import express, { Request, Response, NextFunction } from 'express'
-import { sqlParse } from '@package/sql-parser'
-import { modifyAst, rebuildSql, sqlToAst } from '@package/sql-parser/src/parser'
+import { sqlParse } from '../../packages/sql-parser'
+import { modifyAst, rebuildSql, sqlToAst } from '../../packages/sql-parser'
 import http from 'http'
-import { SqlHashMap } from './entities/SqlHashMap.entity'
-import { Sqlite } from './data-source'
+import { SqlHashMap } from './src/entities/SqlHashMap.entity'
+import { Sqlite } from './src/data-source'
 import { DataSource, Repository } from 'typeorm'
 import cors from 'cors'
+
 export const DI = {} as {
   server: http.Server
   orm: DataSource

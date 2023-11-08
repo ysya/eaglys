@@ -1,19 +1,19 @@
 {
-  "extends": "../../tsconfig.json",
+  "references": [
+    {
+      "path": "../../tsconfig.json"
+    }
+  ],
   "include": [
-    "src/**/**.ts"
+    "./**/**.ts"
   ],
   "compilerOptions": {
+    "paths": {},
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "esModuleInterop": true,
     "strictPropertyInitialization": false,
-    "outDir": "./dist",
-    "sourceMap": true,
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-    },
+    "esModuleInterop": true,
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext"
   }
 }

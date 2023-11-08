@@ -1,5 +1,5 @@
 import { Statement } from 'pgsql-ast-parser'
-import { modifyAst, rebuildSql, sqlToAst } from './parser'
+import { modifyAst, rebuildSql, sqlToAst } from './src/parser'
 
 export function sqlParse(
   sqlString: string,
@@ -24,3 +24,4 @@ export function sqlParse(
 }
 
 export type { Statement }
+export { sqlToAst, modifyAst, rebuildSql }

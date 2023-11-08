@@ -2,7 +2,7 @@
   "name": "@package/sql-parser",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "index.ts",
   "bin": "dist/index.js",
   "scripts": {
     "start": "bun src/cli.ts",
@@ -14,9 +14,6 @@
   "keywords": [],
   "author": "Frank Sung<ysyavv@gmail.com>",
   "license": "ISC",
-  "_moduleAliases": {
-    "@": "src/"
-  },
   "devDependencies": {
     "@vercel/ncc": "^0.38.1",
     "pkg": "^5.8.1"
