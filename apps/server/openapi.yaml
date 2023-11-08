@@ -1,0 +1,167 @@
+openapi: 3.1.0
+info:
+  title: SQL Parser API
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+    description: Development server
+paths:
+  /api/sql/build-ast:
+    post:
+      summary: Build SQL from AST
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ast:
+                  type: array
+                  items: {}
+      responses:
+        '200':
+          description: Successful response with SQL string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  msg:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      ast:
+                        type: array
+                        items: {}
+                      hashMap:
+                        type: object
+        '400':
+          description: Incorrect data format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error during parsing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/sql/hash:
+    post:
+      summary: Hash Sql
+      operationId: post-api-sql-hash
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  msg:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      sqlInput:
+                        type: string
+                      sqlParsed:
+                        type: string
+                      hashMap:
+                        $ref: '#/components/schemas/HashMap'
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sqlString:
+                  type: string
+              required:
+                - sqlString
+  /api/sql/hash-ast:
+    post:
+      summary: ''
+      operationId: post-api-sql-hash-ast
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  msg:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      ast:
+                        type: array
+                        items: {}
+                      hashMap:
+                        type: object
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ast:
+                  type: array
+                  items: {}
+  /api/sql/parse:
+    post:
+      summary: ''
+      operationId: post-api-sql-parse
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  msg:
+                    type: string
+                  data:
+                    type: array
+                    description: ast
+                    items: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sqlString:
+                  type: string
+              required:
+                - sqlString
+components:
+  schemas:
+    HashMap:
+      type: object
+      additionalProperties:
+        type: string
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        msg:
+          type: string
+        data:
+          type: null

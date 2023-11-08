@@ -4,12 +4,13 @@ this is a monorepo project, using [pnpm](https://pnpm.io/) as package manager.
 .
 ├── README.md
 ├── apps
-│   ├── server       // nodejs rest api server
-│   └── web          // vue.js3 frontend
+│   ├── server           // nodejs rest api server
+│   │   ├── openapi.yaml // openapi doc
+│   └── web              // vue.js3 frontend
 └── packages
-    └── sql-parser   // sql parser
-        ├── __test__ // test file
-        └── bin      // binary file
+    └── sql-parser       // sql parser
+        ├── __test__     // test file
+        └── bin          // binary file
 ```
 
 ## Usage
