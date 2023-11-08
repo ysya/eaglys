@@ -9,6 +9,7 @@
     "server:start": "pnpm --filter @app/server dev",
     "server:build": "pnpm --filter @app/server build",
     "sql-parser:start": "pnpm --filter @package/sql-parser start",
+    "sql-parser:test": "pnpm --filter @package/sql-parser test",
     "sql-parser:build": "pnpm --filter @package/sql-parser build"
   },
   "keywords": [],
